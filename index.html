@@ -2811,7 +2811,15 @@
                   .key(function (d) {
                     return d["Focus Area"];
                   })
+                  .sortKeys(function(a,b) {
+                    return d3.ascending(+a.split(".")[0], +b.split(".")[0])
+                  })
                   .entries(data)
+
+                  tempOrder.sort(function(a, b) {
+                    console.log('a', a.values[0].key.split(".")[0])
+                    return d3.ascending(+a.values[0].key.split(".")[0], +b.values[0].key.split(".")[0])
+                  })
 
                   console.log('tempOrder', tempOrder)
 
