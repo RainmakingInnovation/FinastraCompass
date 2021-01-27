@@ -3214,6 +3214,7 @@
                   .style("stroke", "white")
                   .style("stroke-width", "2px")
                   .each(function (d, i) {
+                    console.log('d', d)
                     var firstArcSection = /(^.+?)L/;
                     var newArc = firstArcSection.exec(
                       d3.select(this).attr("d")
@@ -3222,16 +3223,18 @@
                     d.percentage =
                       ((d.endAngle - d.startAngle) / 2 + d.startAngle) /
                       0.0628319;
-                    if (d.percentage >= 100) {
-                      d.percentage -= 100;
-                    }
-                    if (d.percentage >= 25 && d.percentage <= 75) {
+                    // if (d.percentage >= 100) {
+                    //   d.percentage -= 100;
+                    // }
+                    if (d.percentage >= 25 && d.percentage <= 75 && i != 0) {
                       var startLoc = /M(.*?)A/;
                       var middleLoc = /A(.*?)0 0 1/;
                       var endLoc = /0 0 1 (.*?)$/;
+                      console.log(d.newArc)
                       d.newStart = endLoc.exec(d.newArc)[1];
                       d.newEnd = startLoc.exec(d.newArc)[1];
                       d.middleSec = middleLoc.exec(d.newArc)[1];
+  
                       d.newArc =
                         "M" +
                         d.newStart +
@@ -3256,8 +3259,8 @@
                   .enter()
                   .append("text")
                   .attr("class", "label theme-label-text")
-                  .attr("dy", function (d) {
-                    if (d.percentage >= 25 && d.percentage <= 75) {
+                  .attr("dy", function (d, i) {
+                    if (d.percentage >= 25 && d.percentage <= 75 && i != 0) {
                       return themeFontData.dy_upper;
                     }
                     return themeFontData.dy_lower;
