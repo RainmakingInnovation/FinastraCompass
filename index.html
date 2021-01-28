@@ -3869,7 +3869,7 @@
                   .append("textPath")
                   .attr("xlink:href", "#mature-label-path")
                   .attr("startOffset", "50%")
-                  .text("mature");
+                  .text("Mature");
 
                 maturity_list_elements = [
                   { name: "Nascent", fn: nascentLabel },
@@ -6744,10 +6744,10 @@
       function formatFunding(total_funding) {
         fundingFormatted = total_funding;
         if (total_funding <= 900000 && total_funding > 1000) {
-          fundingFormatted = Math.round(total_funding / 10) / 100 + "K";
+          fundingFormatted = Math.round(total_funding / 1000) + "K";
         }
         if (total_funding > 900000) {
-          fundingFormatted = Math.round(total_funding / 10000) / 100 + "M";
+          fundingFormatted = Math.round(total_funding / 1000000) + "M";
         }
         return fundingFormatted;
       }
