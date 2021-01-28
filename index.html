@@ -1529,6 +1529,9 @@
         (indexTrackerYear = {});
       eu = true;
 
+      var nodeScale = d3.scaleLinear().range([1.4, 3]).domain([50,100])
+      var nodeOtherScale = d3.scaleLinear().range([4, 6]).domain([50,100])
+
       // mapbox access token
       const accessToken =
         "pk.eyJ1IjoiZWRkaWVsOTIiLCJhIjoiY2thb2VhZ2RsMDJsaDJ0cW4wYmppNzFwbCJ9.qo71Gruasxg7YdwOSVtmZw";
@@ -2250,7 +2253,8 @@
                         .attr("class", "nodes")
                         .attr("r", function (d) {
                           if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
-                            return nodeRadius;
+                            
+                            return nodeScale(d["Node size"])
                           }
                         })
                         .attr("opacity", function (d) {
@@ -2304,14 +2308,14 @@
                         })
                         .attr("width", function (d) {
                           if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
-                            return nodeOtherWidth;
+                            return nodeOtherScale(d["Node size"]);
                           } else {
                             return 0;
                           }
                         })
                         .attr("height", function (d) {
                           if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
-                            return nodeOtherWidth;
+                            return nodeOtherScale(d["Node size"]);
                           } else {
                             return 0;
                           }
@@ -4204,7 +4208,7 @@
                   })
                   .attr("r", function (d) {
                     if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
-                      return nodeRadius;
+                      return nodeScale(d["Node size"])
                     }
                   })
                   .attr("cx", function (d) {
@@ -4242,14 +4246,14 @@
                   })
                   .attr("width", function (d) {
                     if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
-                      return nodeOtherWidth;
+                      return nodeOtherScale(d["Node size"]);
                     } else {
                       return 0;
                     }
                   })
                   .attr("height", function (d) {
                     if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
-                      return nodeOtherWidth;
+                      return nodeOtherScale(d["Node size"]);
                     } else {
                       return 0;
                     }
@@ -4678,7 +4682,7 @@
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
-                        var endR = nodeRadius;
+                        var endR = nodeScale(d["Node size"]);
                       } else {
                         var endR = 0;
                       }
@@ -4700,7 +4704,7 @@
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
-                        var endWidth = nodeOtherWidth;
+                        var endWidth = nodeOtherScale(d["Node size"]);
                       } else {
                         var endWidth = 0;
                       }
@@ -4718,7 +4722,7 @@
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
-                        var endHeight = nodeOtherWidth;
+                        var endHeight = nodeOtherScale(d["Node size"]);
                       } else {
                         var endHeight = 0;
                       }
@@ -6448,7 +6452,7 @@
                         .attr("class", "nodes")
                         .attr("r", function (d) {
                           if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
-                            return nodeRadius;
+                            return nodeScale(d["Node size"]);
                           }
                         })
                         .attr("opacity", function (d) {
@@ -6497,14 +6501,14 @@
                         })
                         .attr("width", function (d) {
                           if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
-                            return nodeOtherWidth;
+                            return nodeOtherScale(d["Node size"]);
                           } else {
                             return 0;
                           }
                         })
                         .attr("height", function (d) {
                           if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
-                            return nodeOtherWidth;
+                            return nodeOtherScale(d["Node size"]);
                           } else {
                             return 0;
                           }
