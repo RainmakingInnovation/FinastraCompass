@@ -499,7 +499,7 @@
       }
 
       #button-16 .knobs:before {
-        content: "Year";
+        content: "Maturity";
         position: absolute;
         top: 4px;
         left: 4px;
@@ -589,7 +589,7 @@
       }
 
       #button-16 .checkbox:checked + .knobs:before {
-        content: "Maturity";
+        content: "Year";
         left: 36px;
         background-color: #ea3b66;
       }
@@ -1506,7 +1506,7 @@
         nodeOtherWidth = 5.5,
         keySize = 10,
         keySpacing = 10,
-        radial = "year",
+        radial = "maturity",
         animationDuration = 2000,
         keyWidth = 160,
         keyHeight = 260,
@@ -1953,6 +1953,8 @@
                         "#background-segment-" +
                         v.data.value.key
                           .replace(/ /g, "-")
+                          .replace(/\./g, "-")
+                          .replace(/,/g, "")
                           .replace(/&/g, "and");
                       var tmp_width =
                         d3.select(selection).node().getBoundingClientRect()
@@ -2039,6 +2041,8 @@
                               "nascent-segments segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -2047,6 +2051,8 @@
                               "tmp-nascent-segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -2066,6 +2072,8 @@
                               "emerging-segments segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -2074,6 +2082,8 @@
                               "tmp-emerging-segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -2093,6 +2103,8 @@
                               "mature-segments segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -2101,6 +2113,8 @@
                               "tmp-mature-segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -2235,7 +2249,7 @@
                         .append("circle")
                         .attr("class", "nodes")
                         .attr("r", function (d) {
-                          if (d["Funding Stage"] !== "Acquired") {
+                          if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
                             return nodeRadius;
                           }
                         })
@@ -2289,14 +2303,14 @@
                           return d.opacity;
                         })
                         .attr("width", function (d) {
-                          if (d["Funding Stage"] === "Acquired") {
+                          if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                             return nodeOtherWidth;
                           } else {
                             return 0;
                           }
                         })
                         .attr("height", function (d) {
-                          if (d["Funding Stage"] === "Acquired") {
+                          if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                             return nodeOtherWidth;
                           } else {
                             return 0;
@@ -2925,17 +2939,17 @@
                   "Series C",
                   "Series D",
                   "Series E",
-                  "Public",
+                  "Series F"
                 ];
 
                 var fundingCategoryRange = [
-                  "Seed",
-                  "Series A",
-                  "Series B",
-                  "Series C+",
-                  "Series C+",
-                  "Series C+",
-                  "Series C+",
+                  "Seed & Series A",
+                  "Seed & Series A",
+                  "Series B & C",
+                  "Series B & C",
+                  "Series D & E",
+                  "Series D & E",
+                  "Series F+",
                 ];
 
                 var fundingCategoryRangeUnique = [
@@ -3287,6 +3301,7 @@
                       d.data.value.key
                         .replace(/[\])}[{(]/g, "")
                         .replace(/ /g, "-")
+                        .replace(/\./g, "-")
                         .replace(/,/g, "")
                         .replace(/&/g, "and")
                     );
@@ -3315,6 +3330,8 @@
                         "-" +
                         d.data.value.key
                           .replace(/ /g, "-")
+                          .replace(/\./g, "-")
+                          .replace(/,/g, "")
                           .replace(/&/g, "and") +
                         "-segment"
                       );
@@ -3342,6 +3359,7 @@
                         "-" +
                         d.data.value.key
                           .replace(/ /g, "-")
+                          .replace(/\./g, "-")
                           .replace(/[\])}[{(]/g, "")
                           .replace(/&/g, "and")
                           .replace(/,/g, "") +
@@ -3398,7 +3416,7 @@
                   .attr("d", segmentLabelBandArc)
                   .attr("id", function (d) {
                     return (
-                      d.data.value.key.toLowerCase().replace(/ /g, "-") +
+                      d.data.value.key.toLowerCase().replace(/ /g, "-").replace(/\./g, "-").replace(/,/g, "") +
                       "-band"
                     );
                   })
@@ -3643,7 +3661,7 @@
 
                 keyAcquired
                   .append("text")
-                  .text("Acquired")
+                  .text("Acquired / Public")
                   .classed("key-labels key-label", true)
                   .attr("dx", "1.3em")
                   .attr("dy", "0.2em")
@@ -3813,14 +3831,14 @@
                     );
                   d.fn = this["year" + d.key + "Label"];
 
-                  d.fn
-                    .append("text")
-                    .attr("class", "year-label-text")
-                    .attr("id", "year-" + d.key + "-label-path-text")
-                    .append("textPath")
-                    .attr("xlink:href", "#year-" + d.key + "-label-path")
-                    .attr("startOffset", "50%")
-                    .text(d.key);
+                  // d.fn
+                  //   .append("text")
+                  //   .attr("class", "year-label-text")
+                  //   .attr("id", "year-" + d.key + "-label-path-text")
+                  //   .append("textPath")
+                  //   .attr("xlink:href", "#year-" + d.key + "-label-path")
+                  //   .attr("startOffset", "50%")
+                  //   .text(d.key);
                 });
 
                 var matureLabel = chartSVG
@@ -3857,7 +3875,7 @@
 
                 maturity_list.forEach(function (d) {
                   var id = "#" + d.name.toLowerCase() + "-label-path-text";
-                  d3.select(id).remove();
+                  //d3.select(id).remove();
                 });
 
                 count_by_year.forEach(function (d) {
@@ -3868,10 +3886,12 @@
                         "-" +
                         v.data.value.key
                           .replace(/ /g, "-")
+                          .replace(/\./g, "-")
+                          .replace(/,/g, "")
                           .replace(/&/g, "and")
                           .replace(/[\])}[{(]/g, "") +
                         "-segment"
-                    ).attr("opacity", 1);
+                    ).attr("opacity", 0);
                   });
                 });
 
@@ -4183,15 +4203,17 @@
                     return "nodes nodes-" + d.Startup.replace(/ /g, "-")
                   })
                   .attr("r", function (d) {
-                    if (d["Funding Stage"] !== "Acquired") {
+                    if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
                       return nodeRadius;
                     }
                   })
                   .attr("cx", function (d) {
-                    return d.yearX;
+                    return d.x
+                    // return d.yearX;
                   })
                   .attr("cy", function (d) {
-                    return d.yearY;
+                    return d.y
+                    //return d.yearY;
                   })
                   .attr("fill", function (d) {
                     return nodeColorScale(
@@ -4219,14 +4241,14 @@
                     return d["Startup"].toLowerCase().replace(/ /g, "-");
                   })
                   .attr("width", function (d) {
-                    if (d["Funding Stage"] === "Acquired") {
+                    if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                       return nodeOtherWidth;
                     } else {
                       return 0;
                     }
                   })
                   .attr("height", function (d) {
-                    if (d["Funding Stage"] === "Acquired") {
+                    if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                       return nodeOtherWidth;
                     } else {
                       return 0;
@@ -4237,7 +4259,7 @@
                   .attr("fill", "#FFFD82")
                   .attr("transform", function (d) {
                     return (
-                      "translate(" + d.yearX + "," + d.yearY + ")    rotate(45)"
+                      "translate(" + d.x + "," + d.y + ")    rotate(45)"
                     );
                   })
                   .on("mouseover", function (d) {
@@ -4274,14 +4296,14 @@
 
                   if (filterKey === "acquired") {
                     nodes.attr("opacity", function (d) {
-                      if (d["Funding Stage"] !== "Acquired") {
+                      if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
                         d.opacity = 0.3;
                       }
                       return d.opacity;
                     });
 
                     nodes_acquired.attr("opacity", function (d) {
-                      if (d["Funding Stage"] === "Acquired") {
+                      if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                         d.opacity = 1;
                       }
                       return d.opacity;
@@ -4295,7 +4317,8 @@
                     nodes.attr("opacity", function (d) {
                       if (
                         d["Activity/Acquisition Time"] != "" &&
-                        d["Funding Stage"] !== "Acquired"
+                        d["Funding Stage"] !== "Acquired" &&
+                        d["Funding Stage"] !== "Public"
                       ) {
                         d.opacity = 1;
                       } else {
@@ -4334,7 +4357,7 @@
                     });
 
                     nodes_acquired.attr("opacity", function (d) {
-                      if (d["Funding Stage"] === "Acquired") {
+                      if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                         d.opacity = 0.3;
                       }
                       return d.opacity;
@@ -4651,6 +4674,7 @@
                         (d["Value Chain Grouping"] === type ||
                           type === "All Startups") &&
                         d["Funding Stage"] !== "Acquired" &&
+                        d["Funding Stage"] !== "Public" &&
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
@@ -4672,7 +4696,7 @@
                       if (
                         (d["Value Chain Grouping"] === type ||
                           type === "All Startups") &&
-                        d["Funding Stage"] === "Acquired" &&
+                        (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") &&
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
@@ -4690,7 +4714,7 @@
                       if (
                         (d["Value Chain Grouping"] === type ||
                           type === "All Startups") &&
-                        d["Funding Stage"] === "Acquired" &&
+                          (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") &&
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
@@ -4708,7 +4732,7 @@
                       if (
                         (d["Value Chain Grouping"] === type ||
                           type === "All Startups") &&
-                        d["Funding Stage"] === "Acquired" &&
+                          (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") &&
                         d.hide === false &&
                         (d["Global"] === geotype || geotype === "All Startups")
                       ) {
@@ -5357,6 +5381,7 @@
                             "-" +
                             v.data.value.key
                               .replace(/ /g, "-")
+                              .replace(/\./g, "-")
                               .replace(/&/g, "and")
                               .replace(/[\])}[{(]/g, "")
                               .replace(/,/g, "") +
@@ -5380,13 +5405,13 @@
                       .transition()
                       .duration(animationDuration)
                       .attrTween("cx", function (d) {
-                        var i = d3.interpolate(d.yearX, d.x);
+                        var i = d3.interpolate(d.x, d.yearX);
                         return function (t) {
                           return i(t);
                         };
                       })
                       .attrTween("cy", function (d) {
-                        var i = d3.interpolate(d.yearY, d.y);
+                        var i = d3.interpolate(d.y, d.yearY);
                         return function (t) {
                           return i(t);
                         };
@@ -5396,8 +5421,8 @@
                       .transition()
                       .duration(animationDuration)
                       .attrTween("transform", function (d) {
-                        var i = d3.interpolate(d.yearX, d.x);
-                        var j = d3.interpolate(d.yearY, d.y);
+                        var i = d3.interpolate(d.x, d.yearX);
+                        var j = d3.interpolate(d.y, d.yearY);
                         return function (t) {
                           return (
                             "translate(" + i(t) + "," + j(t) + ") rotate(45)"
@@ -5415,6 +5440,7 @@
                             "-" +
                             v.data.value.key
                               .replace(/ /g, "-")
+                              .replace(/\./g, "-")
                               .replace(/&/g, "and")
                               .replace(/[\])}[{(]/g, "")
                               .replace(/,/g, "") +
@@ -5985,7 +6011,7 @@
                       return 0.3;
                     }
                   });
-                  if (d["Funding Stage"] === "Acquired") {
+                  if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                     nodes_acquired.attr("opacity", 1);
                   } else {
                     nodes_acquired.attr("opacity", 0.3);
@@ -6118,7 +6144,7 @@
                       return 0.3;
                     }
                   });
-                  if (data["Funding Stage"] === "Acquired") {
+                  if (data["Funding Stage"] === "Acquired" || data["Funding Stage"] === "Public") {
                     nodes_acquired.attr("opacity", 1);
                   } else {
                     nodes_acquired.attr("opacity", 0.3);
@@ -6148,7 +6174,7 @@
                           .replace(/ /g, "-")
                           .replace(/,/g, "")
                           .replace(/&/g, "and")
-                          .replace(/ /g, "-")
+                          .replace(/\./g, "-")
                           .replace(/&/g, "and");
                       var tmp_width = d3
                         .select(selection)
@@ -6226,6 +6252,8 @@
                               "nascent-segments segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -6234,6 +6262,8 @@
                               "tmp-nascent-segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -6253,6 +6283,8 @@
                               "emerging-segments segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -6261,6 +6293,8 @@
                               "tmp-emerging-segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -6280,6 +6314,8 @@
                               "mature-segments segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -6288,6 +6324,8 @@
                               "tmp-mature-segment-" +
                               d.data.value.key
                                 .replace(/ /g, "-")
+                                .replace(/\./g, "-")
+                                .replace(/,/g, "")
                                 .replace(/&/g, "and")
                             );
                           })
@@ -6409,7 +6447,7 @@
                         .append("circle")
                         .attr("class", "nodes")
                         .attr("r", function (d) {
-                          if (d["Funding Stage"] !== "Acquired") {
+                          if (d["Funding Stage"] !== "Acquired" && d["Funding Stage"] !== "Public") {
                             return nodeRadius;
                           }
                         })
@@ -6458,14 +6496,14 @@
                           return d.opacity;
                         })
                         .attr("width", function (d) {
-                          if (d["Funding Stage"] === "Acquired") {
+                          if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                             return nodeOtherWidth;
                           } else {
                             return 0;
                           }
                         })
                         .attr("height", function (d) {
-                          if (d["Funding Stage"] === "Acquired") {
+                          if (d["Funding Stage"] === "Acquired" || d["Funding Stage"] === "Public") {
                             return nodeOtherWidth;
                           } else {
                             return 0;
